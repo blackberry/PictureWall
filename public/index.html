@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/zepto.js"></script>
+        <link rel="stylesheet" href="css/main.css" />
+        <script>
+          $(document).ready(function () {
+              $("#img").hide();
+              var socket = io.connect(location.href);
+              socket.on('count', function (data) {
+                $("#count").text(data.clients);
+              });
+
+              socket.on('added', function (data) {
+                $("#count").text(data.clients);
+              });
+
+              socket.on('img', function (data) {
+                  $("#count").hide();
+                  $("#img").attr("src", data.uri).show();
+              });
+
+              $("#count").click(function () {
+                  console.log("hrmm");
+                  socket.emit("starting");
+              });
+          });
+        </script>
+    </head>
+    <body>
+        <div id="count">0</div>
+        <img id="img" src=""/>
+    </body>
+</html>

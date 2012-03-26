@@ -1,0 +1,6 @@
+=PlayBook Wall
+
+Control a bunch of playbooks to display a single image
+
+=Contributers:
+    Gord Tanner <gtanner@gmail.com>
