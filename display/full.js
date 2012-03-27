@@ -1,11 +1,16 @@
-var images = require('../images');
+var images = require('../images'),
+    img = "";
 
-module.exports = function (row, col) {
-    return {
-        url: images.random("full"),
-        size: { x: 3072, y: 1800 },
-        pos: {x: 1024 * col * -1, y: 600 * row * -1},
-        row: row,
-        col: col
-    };
+module.exports = {
+    init: function () {
+        img = images.random("full");
+    },
+    render: function (row, col) {
+        return {
+            url: img,
+            pos: {x: 1024 * col * -1, y: 600 * row * -1},
+            row: row,
+            col: col
+        };
+    }
 };

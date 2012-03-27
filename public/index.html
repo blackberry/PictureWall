@@ -18,7 +18,6 @@
               socket.on('img', function (data) {
                   console.log(data);
                   var style = "background-image: url('" + data.url + "');";
-                  style += "background-size: " + data.size.x + "px " + data.size.y + "px;";
                   style += "background-position: " + data.pos.x + "px " + data.pos.y + "px;";
                   $("#img").attr("style", style).show();
               });
