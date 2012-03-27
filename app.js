@@ -1,18 +1,7 @@
 var express = require('express'),
     app = express.createServer(), 
     io = require('socket.io').listen(app),
-    fs = require('fs'),
-    imgs = [];
-
-fs.readdir("public/img", function (err, files) {
-    imgs = files;
-});
-
-
-function random() {
-    var idx = Math.floor(Math.random() * imgs.length);  
-    return "img/" + imgs[idx];
-}
+    grid = [];
 
 app.configure(function () {
     app.use(express.static(__dirname + '/public'));
@@ -26,15 +15,25 @@ io.sockets.on('connection', function (socket) {
     socket.emit('count', { clients: io.sockets.clients().length });
     socket.broadcast.emit('added', { clients: io.sockets.clients().length });
 
-    socket.on('starting', function () {
+    socket.on('row', function (args) {
+        grid.push([]);
+        grid[grid.length - 1].push(socket);
+    });
+
+    socket.on('col', function (args) {
+        grid[grid.length - 1].push(socket);
+    });
+
+    socket.on('start', function () {
+        socket.broadcast.emit('started');
+        var display = require("./display"),
+            x = 0;
+        display.init(grid);
         setInterval(function () {
-            io.sockets.clients().forEach(function (client) {
-                client.emit('img', { uri: random() });
-            });
+            display.render(++x % 2 ? "random" : "full");
         }, 5000);
     });
 });
-
 
 app.listen(3000);
 console.log("listening on 3000");

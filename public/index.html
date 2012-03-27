@@ -16,19 +16,43 @@
               });
 
               socket.on('img', function (data) {
-                  $("#count").hide();
-                  $("#img").attr("src", data.uri).show();
+                  console.log(data);
+                  var style = "background-image: url('" + data.url + "');";
+                  style += "background-size: " + data.size.x + "px " + data.size.y + "px;";
+                  style += "background-position: " + data.pos.x + "px " + data.pos.y + "px;";
+                  $("#img").attr("style", style).show();
               });
 
-              $("#count").click(function () {
-                  console.log("hrmm");
-                  socket.emit("starting");
+              socket.on('started', function () {
+                  $("#count").hide();
+                  $("#start").hide();
+              });
+
+              $("#start").click(function () {
+                  $("#count").hide();
+                  $("#start").hide();
+                  socket.emit("start");
+              });
+
+              $("#row").click(function () {
+                  socket.emit("row");
+                  $("#setup").hide();
+              });
+
+              $("#col").click(function () {
+                  socket.emit("col");
+                  $("#setup").hide();
               });
           });
         </script>
     </head>
     <body>
+        <div id="setup">
+            <button id="row">Row</button>
+            <button id="col">+1</button>
+        </div>
         <div id="count">0</div>
-        <img id="img" src=""/>
+        <button id="start">Start</button>
+        <div id="img" />
     </body>
 </html>
