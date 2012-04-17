@@ -30,5 +30,9 @@ module.exports = {
         }
 
         return imgs[type].stack.pop();
+    },
+
+    all: function (type) {
+        return imgs[type].backup.slice();
     }
 };

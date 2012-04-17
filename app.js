@@ -11,6 +11,16 @@ app.get('/', function (req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
+
+app.get('/images', function (req, res) {
+    var images = require("./images"),
+        tiles = images.all("tile");
+
+    res.send(images.all("tile").concat(images.all("full")).map(function (tile) {
+        return "<img src='" + tile + "'/>";
+    }).join(''));
+});
+
 io.sockets.on('connection', function (socket) {
     socket.emit('count', { clients: io.sockets.clients().length });
     socket.broadcast.emit('added', { clients: io.sockets.clients().length });
@@ -30,7 +40,7 @@ io.sockets.on('connection', function (socket) {
             x = 0;
         display.init(grid);
         setInterval(function () {
-            display.render(++x % 2 ? "random" : "full");
+            display.render(++x % 2 ? "full" : "tile");
         }, 5000);
     });
 });

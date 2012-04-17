@@ -2,48 +2,8 @@
     <head>
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/zepto.js"></script>
+        <script src="/js/index.js"></script>
         <link rel="stylesheet" href="css/main.css" />
-        <script>
-          $(document).ready(function () {
-              $("#img").hide();
-              var socket = io.connect(location.href);
-              socket.on('count', function (data) {
-                $("#count").text(data.clients);
-              });
-
-              socket.on('added', function (data) {
-                $("#count").text(data.clients);
-              });
-
-              socket.on('img', function (data) {
-                  console.log(data);
-                  var style = "background-image: url('" + data.url + "');";
-                  style += "background-position: " + data.pos.x + "px " + data.pos.y + "px;";
-                  $("#img").attr("style", style).show();
-              });
-
-              socket.on('started', function () {
-                  $("#count").hide();
-                  $("#start").hide();
-              });
-
-              $("#start").click(function () {
-                  $("#count").hide();
-                  $("#start").hide();
-                  socket.emit("start");
-              });
-
-              $("#row").click(function () {
-                  socket.emit("row");
-                  $("#setup").hide();
-              });
-
-              $("#col").click(function () {
-                  socket.emit("col");
-                  $("#setup").hide();
-              });
-          });
-        </script>
     </head>
     <body>
         <div id="setup">
@@ -53,5 +13,6 @@
         <div id="count">0</div>
         <button id="start">Start</button>
         <div id="img" />
+        <div id="imgs" />
     </body>
 </html>
