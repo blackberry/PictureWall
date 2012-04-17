@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Widget Configuration Reference:
+    http://docs.blackberry.com/en/developers/deliverables/15274/
+-->
+
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+	version="1.4.0.0">
+
+  <name>PlayBook Wall</name>
+
+  <description>
+      PlayBook Wall Node
+  </description>
+
+  <license href="http://opensource.org/licenses/alphabetical"></license>
+
+  <!-- Cordova API -->
+  <access subdomains="true" uri="file:///store/home" />
+  <access subdomains="true" uri="file:///SDCard" />
+
+  <!-- Expose access to all URIs, including the file and http protocols -->
+  <access subdomains="true" uri="*" />
+
+  <icon rim:hover="false" src="resources/icon.png" />
+  <icon rim:hover="true" src="resources/icon_hover.png" />
+
+  <rim:loadingScreen backgroundColor="#000000"
+                     foregroundImage="resources/loading_foreground.png"
+		     onFirstLaunch="true">
+    <rim:transitionEffect type="fadeOut" />
+  </rim:loadingScreen>
+
+  <content src="http://10.172.248.100:3000/" />
+
+</widget>
