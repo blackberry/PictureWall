@@ -1,4 +1,4 @@
 node_modules
 .DS_Store
 tags
-public/img
+server/public/img
