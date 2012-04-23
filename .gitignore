@@ -3,3 +3,4 @@ node_modules
 tags
 server/public/img
 app/buildId.txt
+app/build
