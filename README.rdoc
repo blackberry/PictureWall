@@ -1,6 +1,6 @@
-=PlayBook Wall
+=Picture Wall
 
-Control a bunch of playbooks to display a single image
+Control a bunch of playbooks to display a single image or multiple images.
 
 =Contributers:
     Gord Tanner <gtanner@gmail.com>
