@@ -20,15 +20,22 @@ module.exports = {
         grid = g;
     },
 
-    render: function (plugin) {
+    render: function (plugin, io) {
         var plugin = require("./display/" + plugin),
             row, col;
 
         plugin.init();
 
-        for (row = 0; row < grid.length; row++) {
-            for (col = 0; col < grid[row].length; col++) {
-                grid[row][col].emit('img', plugin.render(row, col));
+        if (io) {
+            io.sockets.clients().forEach(function (s) {
+                s.emit('img', plugin.render());
+            });
+        }
+        else {
+            for (row = 0; row < grid.length; row++) {
+                for (col = 0; col < grid[row].length; col++) {
+                    grid[row][col].emit('img', plugin.render(row, col));
+                }
             }
         }
     }

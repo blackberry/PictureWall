@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 var express = require('express'),
+    display = require('./display'),
     app = express.createServer(), 
     io = require('socket.io').listen(app),
     grid = [];
@@ -30,25 +31,14 @@ io.sockets.on('connection', function (socket) {
     socket.emit('count', { clients: io.sockets.clients().length });
     socket.broadcast.emit('added', { clients: io.sockets.clients().length });
 
-    socket.on('row', function (args) {
-        grid.push([]);
-        grid[grid.length - 1].push(socket);
-    });
-
-    socket.on('col', function (args) {
-        grid[grid.length - 1].push(socket);
-    });
-
-    socket.on('start', function () {
-        socket.broadcast.emit('started');
-        var display = require("./display"),
-            x = 0;
-        display.init(grid);
-        setInterval(function () {
-            display.render(++x % 2 ? "full" : "tile");
-        }, 5000);
+    socket.on('disconnect', function () {
+        socket.broadcast.emit('added', { clients: io.sockets.clients().length - 1 });
     });
 });
+
+setInterval(function () {
+    display.render('tile', io);
+}, 5000);
 
 app.listen(3000);
 console.log("listening on 3000");

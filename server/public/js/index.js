@@ -14,40 +14,47 @@
  * limitations under the License.
  */
 $(document).ready(function () {
-  var socket = io.connect(location.href);
-  socket.on('count', function (data) {
-    $("#count").text(data.clients);
+  var socket = io.connect(location.href, {
+          "max reconnection attempts": 1000000,
+          "reconnection limit": 2000
+      }),
+      a = alice.init(),
+      reconnect = false;
+
+  socket.on('connect', function () {
+      if (reconnect) {
+          location.reload();
+      }
+
+      reconnect = true;
+  });
+
+  var top = "#img1",
+      bottom = "#img2",
+      z = 1;
+
+  socket.on('img', function (data) {
+      var style = "background-image: url('" + data.url + "');",
+          swap;
+
+      swap = top;
+      top = bottom;
+      bottom = swap;
+
+      style += "background-size: " + screen.width + "px " + screen.height + "px;";
+      style += "z-index: " + ++z;
+      $(top).attr("style", style);
+
+      $(top).show();
+      a.fade(top.replace("#", ''), "in", "500ms", "ease-in-out");
+      setTimeout($(bottom).hide, 5);
   });
 
   socket.on('added', function (data) {
-    $("#count").text(data.clients);
+      $("#count").text(data.clients);
   });
 
-  socket.on('img', function (data) {
-      var style = "background-image: url('" + data.url + "');";
-      style += "background-position: " + data.pos.x + "px " + data.pos.y + "px;";
-      style += "background-size: " + data.size.x + "px " + data.size.y + "px;";
-      $("#img").attr("style", style).show();
-  });
-
-  socket.on('started', function () {
-      $("#count").hide();
-      $("#start").hide();
-  });
-
-  $("#start").click(function () {
-      $("#count").hide();
-      $("#start").hide();
-      socket.emit("start");
-  });
-
-  $("#row").click(function () {
-      socket.emit("row");
-      $("#setup").hide();
-  });
-
-  $("#col").click(function () {
-      socket.emit("col");
-      $("#setup").hide();
+  socket.on('count', function (data) {
+      $("#count").text(data.clients);
   });
 });
